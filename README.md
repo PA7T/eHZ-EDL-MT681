@@ -58,3 +58,6 @@ sudo ln -s /dev/shm/eHZ-EDL-MT681.json eHZ-EDL-MT681.json
 
 # access data
 http://dietpi.local/eHZ-EDL-MT681.json
+
+# display data via webserver
+place index.html in /var/www/
