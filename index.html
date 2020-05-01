@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<figure class="highcharts-figure">
+    <div id="container-bought" class="chart-container"></div>
+    <div id="container-sold" class="chart-container"></div>
+    <p class="highcharts-description">
+    </p>
+</figure>
+
+<script type="text/javascript">
+var gaugeOptions = {
+    chart: {
+        type: 'solidgauge'
+    },
+
+    title: null,
+
+    pane: {
+        center: ['50%', '85%'],
+        size: '100%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+    },
+
+    exporting: {
+        enabled: false
+    },
+
+    tooltip: {
+        enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+        stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        tickWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+            y: -50
+        },
+        labels: {
+            y: 16
+        }
+    },
+
+    plotOptions: {
+        solidgauge: {
+            dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
+            }
+        }
+    }
+};
+
+// The bought gauge
+var chartBought = Highcharts.chart('container-bought', Highcharts.merge(gaugeOptions, {
+    yAxis: {
+        min: 0,
+        max: 5000,
+        title: {
+            text: 'Energy bought'
+        }
+    },
+
+    credits: {
+        enabled: false
+    },
+
+    series: [{
+        name: 'Bought',
+        data: [0],
+        dataLabels: {
+            format:
+                '<div style="text-align:center">' +
+                '<span style="font-size:25px">{y}</span><br/>' +
+                '<span style="font-size:12px;opacity:0.4">kWh</span>' +
+                '</div>'
+        },
+        tooltip: {
+            valueSuffix: ' kWh'
+        }
+    }]
+
+}));
+// The sold gauge
+var chartSold = Highcharts.chart('container-sold', Highcharts.merge(gaugeOptions, {
+    yAxis: {
+        min: 0,
+        max: 5000,
+        title: {
+            text: 'Energy sold'
+        }
+    },
+
+    credits: {
+        enabled: false
+    },
+
+    series: [{
+        name: 'Sold',
+        data: [0],
+        dataLabels: {
+            format:
+                '<div style="text-align:center">' +
+                '<span style="font-size:25px">{y}</span><br/>' +
+                '<span style="font-size:12px;opacity:0.4">kWh</span>' +
+                '</div>'
+        },
+        tooltip: {
+            valueSuffix: ' kWh'
+        }
+    }]
+
+}));
+
+// Bring life to the dials
+setInterval(function () {
+    var point,
+        newVal
+
+    if (chartBought) {
+        point_bought = chartBought.series[0].points[0];
+   
+        $.ajax({
+		type: "GET",
+		url: "/eHZ-EDL-MT681.json",
+ 		dataType: 'json',
+
+		success: function(data, status){
+			var json_x = data;
+			newVal = json_x['1-0:1.8.0*255'][0]/1000;
+			point_bought.update(newVal);
+		}
+	});
+    }
+    if (chartSold) {
+        point_sold = chartSold.series[0].points[0];
+   
+        $.ajax({
+		type: "GET",
+		url: "/eHZ-EDL-MT681.json",
+ 		dataType: 'json',
+
+		success: function(data, status){
+			var json_x = data;
+			newVal = json_x['1-0:2.8.0*255'][0]/1000;
+			point_sold.update(newVal);
+		}
+	});
+    }
+
+}, 2000);
+</script>
+</body>
+
