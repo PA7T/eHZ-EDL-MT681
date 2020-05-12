@@ -51,3 +51,4 @@ http://dietpi.local/eHZ-EDL-MT681.json
 
 # display data via webserver
 place index.html in /var/www/
+http://dietpi.local/
