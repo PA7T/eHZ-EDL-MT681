@@ -1,0 +1,21 @@
+[Unit]
+Description=Daemon to monitor the eHZ-EDL MT681 output
+Documentation=https://github.com/PA7T/eHZ-EDL-MT681
+After=network.target auditd.service
+
+[Service]
+#EnvironmentFile=-/etc/default/ssh
+#ExecStartPre=/usr/sbin/sshd -t
+User=dietpi
+Group=dietpi
+ExecStart=/home/dietpi/bin/MT681_daemon.sh
+#KillMode=process
+Restart=always
+#RestartPreventExitStatus=255
+#Type=notify
+#RuntimeDirectory=sshd
+#RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target
+Alias=mt681.service
