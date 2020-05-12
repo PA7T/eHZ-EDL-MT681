@@ -22,13 +22,22 @@ cd libsml
 make
 cp examples/sml_server /home/dietpi/bin
 ```
-
-## install eHZ-to-json.py
-cp eHZ-to-json.py /home/dietpi/bin/eHZ-to-json.py
-
-# edit cron with:  crontab -e
+## clone git repository
 ```bash
-* * * * * /home/dietpi/bin/sml_server -s /dev/ttyUSB0 > /dev/shm/eHZ-EDL-MT681.log; python3 /home/dietpi/bin/eHZ-to-json.py > /dev/shm/eHZ-EDL-MT681.json
+git clone https://github.com/PA7T/eHZ-EDL-MT681.git
+```
+## copy files to their location
+```bash
+cd eHZ-EDL-MT681
+cp eHZ-to-json.py /home/dietpi/bin/
+cp MT681_daemon.sh /home/dietpi/bin/
+sudo cp mt681.service /etc/systemd/system/
+```
+
+## start and enable daemon to monitor eHZ-EDL MT681 serial output
+```bash
+sudo systemctl start mt681
+sudo systemctl enable mt681
 ```
 
 # make link to date for webserver access
