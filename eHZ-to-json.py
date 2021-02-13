@@ -7,7 +7,7 @@ import random
 
 logfile = "/dev/shm/eHZ-EDL-MT681.log"
 
-mqttBroker ="192.168.231.10"
+mqttBroker ="BROKERIP"
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
 client = mqtt.Client(client_id)
 client.username_pw_set(MYUSERNAME, MYPASSWORD)
