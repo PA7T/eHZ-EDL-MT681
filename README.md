@@ -7,7 +7,7 @@ Dietpi installation for eHZ-EDL-MT681 smart meter language parsing
 
 INSTALL lighthttpd via dietpi-software
 
-sudo apt-get install vim screen git uuid-dev uuid-runtime
+sudo apt-get install vim screen git uuid-dev uuid-runtime python3-paho-mqtt
 sudo dietpi-software install 16 # build essentials
 
 # Customise installation
