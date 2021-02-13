@@ -2,9 +2,18 @@
 
 import json
 import os
-
+import paho.mqtt.client as mqtt
+import random
 
 logfile = "/dev/shm/eHZ-EDL-MT681.log"
+
+mqttBroker ="192.168.231.10"
+client_id = f'python-mqtt-{random.randint(0, 1000)}'
+client = mqtt.Client(client_id)
+client.username_pw_set(MYUSERNAME, MYPASSWORD)
+client.connect(mqttBroker)
+
+mqtt_prefix = "eHZ-EDL/"
 
 while True:
 
@@ -17,6 +26,7 @@ while True:
     for line in f:
         obis = line.strip().split('#')
         d[obis[0]] = (obis[1],obis[2])
+        client.publish(mqtt_prefix + obis[0], obis[1])
 #    print(line,end='')
 #    print(line.strip().split('#'))
 
