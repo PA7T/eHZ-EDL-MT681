@@ -29,7 +29,7 @@ git clone https://github.com/PA7T/eHZ-EDL-MT681.git
 ## copy files to their location
 ```bash
 cd eHZ-EDL-MT681
-cp eHZ-to-json.py /home/dietpi/bin/
+cp eHZ-to-json-pub-mqtt.py /home/dietpi/bin/
 cp MT681_daemon.sh /home/dietpi/bin/
 sudo cp mt681.service /etc/systemd/system/
 ```
