@@ -20,6 +20,7 @@ i=0
 i_max=30
 
 power = 0.
+grid_power_w = 0.
 
 while True:
     i=i+1
@@ -37,6 +38,7 @@ while True:
         
         power = power + (int(''.join(d["1-0:16.7.0*255"][0])))
         client.publish(mqtt_prefix + "power", power/i_max)
+        grid_power_w = power/i_max
         power=0
     else:
         for line in f:
@@ -52,4 +54,17 @@ while True:
 
     with open("/dev/shm/eHZ-EDL-MT681.json",'w') as fileout:
         fileout.write(json.dumps(d,ensure_ascii=False))
-    
+
+    deviceValues = {
+    "device_values": {
+        "energy_meters": {
+            "0": {
+                "grid_power_w": grid_power_w                              # Set current total grid power in W (-... feed-in, +... consumption)
+            }
+        }
+      }
+    }
+
+    with open("/dev/shm/values.json",'w') as fileout:
+        fileout.write(json.dumps(deviceValues,ensure_ascii=False))
+        
