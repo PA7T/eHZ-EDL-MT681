@@ -44,6 +44,12 @@ sudo systemctl enable mt681
 ```bash
 cd /var/www
 sudo ln -s /dev/shm/eHZ-EDL-MT681.json eHZ-EDL-MT681.json
+
+mkdir api
+mkdir api/v1/
+cd api/v1/
+sudo ln -s /dev/shm/values.json values.json
+
 ```
 
 # access data
@@ -51,5 +57,6 @@ http://dietpi.local/eHZ-EDL-MT681.json
 
 # display data via webserver
 place index.html in /var/www/
+place info.json in /var/www/api/v1/
 
 http://dietpi.local/
